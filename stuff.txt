@@ -1,0 +1,105 @@
+Replace "Your compiled contract binary here" with the actual compiled contract bytecode
+in blockchain/contracts
+
+
+You can get this by compiling your Solidity contracts with solc or using Remix
+
+Generation Process:
+
+These wrappers are typically generated using web3j CLI:
+
+bash
+Copy
+web3j generate solidity -b /path/to/your/contract.bin -a /path/to/your/contract.abi -o /output/directory -p com.your.package
+
+
+Roadmap for Backend File Verification
+1. Start with Configuration Files
+
+Path: src/main/resources/application.properties
+Verify PostgreSQL database connection properties (e.g., spring.datasource.url, spring.datasource.username, spring.datasource.password).
+Ensure Hibernate/JPA settings (e.g., spring.jpa.hibernate.ddl-auto, spring.jpa.show-sql) are correctly configured.
+Add JWT secret keys and expiration settings if missing.
+
+Path: src/main/java/com/pharmachain/pharma_supply_chain/config/DatabaseConfig.java
+Check if the database configuration is properly set up for PostgreSQL.
+Ensure the DataSource bean is correctly defined.
+
+
+2. Verify the Security Layer
+Path: src/main/java/com/pharmachain/pharma_supply_chain/security/SecurityConfig.java
+Ensure JWT authentication and role-based access control are properly configured.
+Verify the JwtAuthenticationFilter and JwtTokenProvider for token generation and validation.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/security/JwtAuthenticationFilter.java
+Check if the filter extracts and validates JWT tokens correctly.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/security/JwtTokenProvider.java
+Verify token creation, validation, and expiration logic.
+3. Validate the User Management System
+Path: src/main/java/com/pharmachain/pharma_supply_chain/model/User.java
+Ensure the User entity is mapped correctly to the database table.
+Verify fields like username, password, roles, and their annotations.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/repository/UserRepository.java
+Check if the repository provides methods for user lookup (e.g., findByUsername).
+Path: src/main/java/com/pharmachain/pharma_supply_chain/service/AuthService.java
+Verify user authentication logic, including password encoding and token generation.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/service/UserService.java
+Ensure user registration and role assignment logic is implemented correctly.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/dto/UserRegistrationRequest.java
+Check if the DTO contains all necessary fields for user registration.
+4. Blockchain Integration
+Path: src/main/java/com/pharmachain/pharma_supply_chain/blockchain/config/Web3jConfig.java
+Verify the Web3j configuration for connecting to the Ethereum blockchain.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/blockchain/contracts/SupplyChain.java
+Ensure the generated Java wrapper for the Solidity contract is correct.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/blockchain/services/ContractLoaderService.java
+Verify the logic for loading and interacting with the deployed smart contracts.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/blockchain/services/SupplyChainService.java
+Check if the service handles blockchain transactions and queries correctly.
+5. QR Code Generation
+Path: src/main/java/com/pharmachain/pharma_supply_chain/service/QRCodeService.java
+Verify the QR code generation logic using the ZXing library.
+Ensure the QR code contains the correct product and blockchain data.
+6. Controllers
+Path: src/main/java/com/pharmachain/pharma_supply_chain/controller/AuthController.java
+Verify endpoints for user login and registration.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/controller/SupplyChainController.java
+Check endpoints for product lifecycle tracking and blockchain interactions.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/controller/TrackingController.java
+Ensure the QR code verification endpoint retrieves and displays product history.
+7. Database Migration
+Path: src/main/resources/db/migration/V1__Create_users_table.sql
+Verify the SQL script for creating the users table.
+Ensure the schema matches the User entity in the code.
+8. Utilities
+Path: src/main/java/com/pharmachain/pharma_supply_chain/util/Web3jUtils.java
+Verify utility methods for interacting with Web3j.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/util/PasswordEncoderTest.java
+Ensure password encoding and matching logic is tested.
+9. Test Cases
+Path: src/test/java/com/pharmachain/pharma_supply_chain/PharmaSupplyChainApplicationTests.java
+Verify the Spring Boot context loads correctly.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/repository/UserRepositoryTest.java
+Add tests for user repository methods.
+Path: src/main/java/com/pharmachain/pharma_supply_chain/service/PasswordEncoderTest.java
+Test password encoding and validation.
+10. Final Integration
+Path: src/main/java/com/pharmachain/pharma_supply_chain/PharmaSupplyChainApplication.java
+Ensure the application entry point is correctly configured.
+Verify that all beans are loaded and dependencies are injected properly.
+Order of Verification
+Configuration Files: application.properties, DatabaseConfig.java.
+Security Layer: SecurityConfig.java, JwtAuthenticationFilter.java, JwtTokenProvider.java.
+User Management: User.java, UserRepository.java, AuthService.java, UserService.java.
+Blockchain Integration: Web3jConfig.java, SupplyChain.java, ContractLoaderService.java, SupplyChainService.java.
+QR Code System: QRCodeService.java.
+Controllers: AuthController.java, SupplyChainController.java, TrackingController.java.
+Database Migration: V1__Create_users_table.sql.
+Utilities: Web3jUtils.java, PasswordEncoderTest.java.
+Test Cases: PharmaSupplyChainApplicationTests.java, UserRepositoryTest.java.
+Next Steps
+Start with application.properties and verify the database connection.
+Move to security configuration to ensure authentication and authorization are functional.
+Proceed with user management to verify user registration and login.
+Gradually integrate blockchain and QR code functionality.
+Test the entire backend after completing the verification.
+Let me know where you'd like to start, and I can assist with the specific file!
